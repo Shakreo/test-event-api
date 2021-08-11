@@ -18,14 +18,11 @@ export class EventsService {
   getEvents(filterEventsDto: FilterEventsDto): Event[] {
     const { eventTitle, eventDateStart, eventDateEnd, eventCity } =
       filterEventsDto;
-    let results: Event[] = this.getAllEvents();
-    results = results
+    return this.getAllEvents()
       .filter((result) => result.eventTitle.includes(eventTitle || ''))
       .filter((result) => result.eventCity.includes(eventCity || ''))
       .filter((result) => result.eventDate >= eventDateStart)
       .filter((result) => result.eventDate <= eventDateEnd);
-
-    return results;
   }
 
   getEventById(id: string): Event {

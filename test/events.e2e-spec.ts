@@ -90,13 +90,18 @@ describe('EventsController (e2e)', () => {
 
   it('/events/:id (GET)', async () => {
     const id = eventsService.getAllEvents()[0].id;
-    const response = await request(app.getHttpServer()).get('/events/' + id);
+    const response = await request(app.getHttpServer()).get(`/events/${id}`);
     expect(response.status).toBe(200);
     expect(response.body.eventTitle).toMatch(eventParams.eventTitle);
     expect(response.body.eventDate).toMatch(
       eventParams.eventDate.toISOString(),
     );
     expect(response.body.eventCity).toMatch(eventParams.eventCity);
+  });
+
+  it('/events/:id (GET) unknown id', async () => {
+    const response = await request(app.getHttpServer()).get('/events/unknown');
+    expect(response.status).toBe(404);
   });
 
   it('/events/:id (PUT)', async () => {

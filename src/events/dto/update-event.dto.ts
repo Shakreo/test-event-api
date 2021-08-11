@@ -1,8 +1,9 @@
 import { Type } from 'class-transformer';
-import { IsDate, IsOptional } from 'class-validator';
+import { IsDate, IsOptional, IsString } from 'class-validator';
 
 export class UpdateEventDto {
   @IsOptional()
+  @IsString()
   eventTitle?: string;
 
   @Type(() => Date)
@@ -11,5 +12,6 @@ export class UpdateEventDto {
   eventDate?: Date;
 
   @IsOptional()
+  @IsString()
   eventCity?: string;
 }

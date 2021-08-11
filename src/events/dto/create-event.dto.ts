@@ -1,8 +1,9 @@
 import { Type } from 'class-transformer';
-import { IsDate, IsNotEmpty } from 'class-validator';
+import { IsDate, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateEventDto {
   @IsNotEmpty()
+  @IsString()
   eventTitle: string;
 
   @Type(() => Date)
@@ -11,5 +12,6 @@ export class CreateEventDto {
   eventDate: Date;
 
   @IsNotEmpty()
+  @IsString()
   eventCity: string;
 }
