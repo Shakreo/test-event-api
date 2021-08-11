@@ -27,12 +27,6 @@ $ yarn start:prod
 ## Test
 
 ```bash
-# unit tests
-$ yarn test
-
 # e2e tests
 $ yarn test:e2e
-
-# test coverage
-$ yarn test:cov
 ```
