@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  NotFoundException,
   Param,
   Post,
   Put,
@@ -29,11 +28,7 @@ export class TicketsController {
 
   @Get('/:barcode')
   getTicket(@Param('barcode') barcode: string): Ticket {
-    const ticket = this.ticketsService.getTicketByBarcode(barcode);
-    if (ticket === undefined) {
-      throw new NotFoundException();
-    }
-    return ticket;
+    return this.ticketsService.getTicketByBarcode(barcode);
   }
 
   @Post()
@@ -46,20 +41,12 @@ export class TicketsController {
     @Param('barcode') barcode: string,
     @Body() updateTicketDto: UpdateTicketDto,
   ): Ticket {
-    const ticket = this.ticketsService.getTicketByBarcode(barcode);
-    if (ticket === undefined) {
-      throw new NotFoundException();
-    }
     return this.ticketsService.updateTicket(barcode, updateTicketDto);
   }
 
   @Delete('/:barcode')
   deleteTicket(@Param('barcode') barcode: string): void {
-    const ticket = this.ticketsService.getTicketByBarcode(barcode);
-    if (ticket === undefined) {
-      throw new NotFoundException();
-    }
-    this.ticketsService.deleteTicket(barcode);
+    this.ticketsService.getTicketByBarcode(barcode);
     return;
   }
 }

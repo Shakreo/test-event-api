@@ -30,11 +30,7 @@ export class EventsController {
 
   @Get('/:id')
   getEventById(@Param('id') id: string): Event {
-    const event = this.eventsService.getEventById(id);
-    if (event === undefined) {
-      throw new NotFoundException();
-    }
-    return event;
+    return this.eventsService.getEventById(id);
   }
 
   @Post()
@@ -47,19 +43,11 @@ export class EventsController {
     @Param('id') id: string,
     @Body() updateEventDto: UpdateEventDto,
   ): Event {
-    const event = this.eventsService.getEventById(id);
-    if (event === undefined) {
-      throw new NotFoundException();
-    }
     return this.eventsService.updateEvent(id, updateEventDto);
   }
 
   @Delete('/:id')
   deleteEvent(@Param('id') id: string): void {
-    const event = this.eventsService.getEventById(id);
-    if (event === undefined) {
-      throw new NotFoundException();
-    }
     return this.eventsService.deleteEvent(id);
   }
 }

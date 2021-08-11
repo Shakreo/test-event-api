@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 // import { randomUUID } from 'node:crypto';
 import { CreateEventDto } from './dto/create-event.dto';
@@ -26,7 +26,11 @@ export class EventsService {
   }
 
   getEventById(id: string): Event {
-    return this.events.find((event) => event.id === id);
+    const event = this.events.find((event) => event.id === id);
+    if (!event) {
+      throw new NotFoundException();
+    }
+    return event;
   }
 
   createEvent(createEventDto: CreateEventDto): Event {
@@ -44,14 +48,22 @@ export class EventsService {
   }
 
   updateEvent(id: string, updateEventDto: UpdateEventDto): Event {
-    const index: number = this.events.findIndex((event) => event.id === id);
+    const index: number = this.findIndex(id);
 
     this.events[index] = { ...this.events[index], ...updateEventDto };
     return this.events[index];
   }
 
   deleteEvent(id: string): void {
-    const index: number = this.events.findIndex((event) => event.id === id);
+    const index: number = this.findIndex(id);
     this.events.splice(index, 1);
+  }
+
+  private findIndex(id: string): number {
+    const index: number = this.events.findIndex((event) => event.id === id);
+    if (index === undefined) {
+      throw new NotFoundException();
+    }
+    return index;
   }
 }

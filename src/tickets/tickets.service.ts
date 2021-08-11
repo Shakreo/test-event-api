@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { FilterTicketsDto } from 'src/tickets/dto/filter-tickets.dto';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
@@ -21,7 +21,11 @@ export class TicketsService {
   }
 
   getTicketByBarcode(barcode: string): Ticket {
-    return this.tickets.find((ticket) => ticket.barcode === barcode);
+    const ticket = this.tickets.find((ticket) => ticket.barcode === barcode);
+    if (!ticket) {
+      throw new NotFoundException();
+    }
+    return ticket;
   }
 
   createTicket(createTicketDto: CreateTicketDto): Ticket {
@@ -37,18 +41,26 @@ export class TicketsService {
   }
 
   updateTicket(barcode: string, updateTicketDto: UpdateTicketDto): Ticket {
-    const index: number = this.tickets.findIndex(
-      (ticket) => ticket.barcode === barcode,
-    );
-
-    this.tickets[index] = { ...this.tickets[index], ...updateTicketDto };
-    return this.tickets[index];
+    const index: number = this.findIndex(barcode);
+    // this.tickets[index] = { ...this.tickets[index], ...updateTicketDto };
+    return (this.tickets[index] = {
+      ...this.tickets[index],
+      ...updateTicketDto,
+    });
   }
 
   deleteTicket(barcode: string): void {
+    const index: number = this.findIndex(barcode);
+    this.tickets.splice(index, 1);
+  }
+
+  private findIndex(barcode: string): number {
     const index: number = this.tickets.findIndex(
       (ticket) => ticket.barcode === barcode,
     );
-    this.tickets.splice(index, 1);
+    if (index === undefined) {
+      throw new NotFoundException();
+    }
+    return index;
   }
 }
