@@ -88,6 +88,17 @@ describe('EventsController (e2e)', () => {
     expect(response.body).toMatchObject(ticketParams);
   });
 
+  it('/tickets (POST) have generated barcode', async () => {
+    const response = await request(app.getHttpServer())
+      .post('/tickets')
+      .send({
+        ...ticketParams,
+        barcode: undefined,
+      });
+    expect(response.status).toBe(201);
+    expect(response.body.barcode).toHaveLength(8);
+  });
+
   it('/tickets (POST) invalid barcode', async () => {
     const response = await request(app.getHttpServer())
       .post('/tickets')

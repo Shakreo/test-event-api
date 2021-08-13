@@ -1,10 +1,12 @@
 import {
   IsAlphanumeric,
   IsNotEmpty,
+  IsOptional,
   IsString,
   IsUUID,
   Length,
 } from 'class-validator';
+import { Ticket } from '../entities/tickets.entity';
 
 export class CreateTicketDto {
   @IsString()
@@ -12,10 +14,10 @@ export class CreateTicketDto {
   @IsNotEmpty()
   eventId: string;
 
-  @IsNotEmpty()
   @IsString()
   @IsAlphanumeric()
-  @Length(1, 8)
+  @Length(1, Ticket.BARCODE_LENGTH)
+  @IsOptional()
   barcode: string;
 
   @IsNotEmpty()

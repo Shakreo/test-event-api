@@ -3,6 +3,7 @@ import { FilterTicketsDto } from 'src/tickets/dto/filter-tickets.dto';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
 import { Ticket } from './entities/tickets.entity';
+import { randomBytes } from 'crypto';
 
 @Injectable()
 export class TicketsService {
@@ -31,7 +32,8 @@ export class TicketsService {
   createTicket(createTicketDto: CreateTicketDto): Ticket {
     const { barcode, firstName, lastName, eventId } = createTicketDto;
     const ticket: Ticket = {
-      barcode,
+      barcode:
+        barcode || randomBytes(Ticket.BARCODE_LENGTH / 2).toString('hex'),
       firstName,
       lastName,
       eventId,

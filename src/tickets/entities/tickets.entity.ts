@@ -7,6 +7,8 @@ import {
 } from 'class-validator';
 
 export class Ticket {
+  static BARCODE_LENGTH = 8;
+
   @IsString()
   @IsUUID()
   @IsNotEmpty()
